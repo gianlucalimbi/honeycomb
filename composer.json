@@ -1,0 +1,26 @@
+{
+    "name": "gianlucalimbi/honeycomb",
+    "description": "JSON API for Laravel",
+    "version": "1.0.0",
+    "type": "library",
+    "keywords": [
+        "api",
+        "json",
+        "rest",
+        "laravel"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gianluca Limbi",
+            "email": "info@gianlucalimbi.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Honeycomb\\": "src"
+        },
+        "files": []
+    }
+}
