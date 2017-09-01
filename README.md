@@ -1,3 +1,3 @@
 # Honeycomb
 
-JSON API for Laravel
+Sweet JSON API for Laravel
