@@ -24,10 +24,6 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      */
     const RESERVED_NAMES = [ 'status', 'feedback', 'metadata', 'error', 'errors' ];
 
-    const PER_PAGE_DEFAULT = self::PER_PAGE_MIN;
-    const PER_PAGE_MIN = 10;
-    const PER_PAGE_MAX = 100;
-
     /**
      * Name used for data in the JSON output.
      *
@@ -406,19 +402,23 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
             return null;
         }
 
-        $perPage = (int) request()->get('per_page', self::PER_PAGE_DEFAULT);
+        $perPageMin = $this->getPerPageMin();
+        $perPageMax = $this->getPerPageMax();
+        $perPageDefault = $this->getPerPageDefault();
+
+        $perPage = (int) request()->get('per_page', $perPageDefault);
 
         if ($perPage <= 0) {
             abort_api(416, sprintf('invalid per_page argument, min:%1$d max:%2$d',
-                self::PER_PAGE_MIN, self::PER_PAGE_MAX));
+                $perPageMin, $perPageMax));
         }
 
-        if ($perPage > self::PER_PAGE_MAX) {
-            $perPage = self::PER_PAGE_MAX;
+        if ($perPage > $perPageMax) {
+            $perPage = $perPageMax;
         }
 
-        if ($perPage < self::PER_PAGE_MIN) {
-            $perPage = self::PER_PAGE_MIN;
+        if ($perPage < $perPageMin) {
+            $perPage = $perPageMin;
         }
 
         return $perPage;
@@ -552,7 +552,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
     /* Config related */
 
     /**
-     * Transform response array based on config keys.
+     * Transform response array, based on config file.
      * It just supports 'camel_case' at the moment.
      *
      * @param array $array
@@ -568,6 +568,36 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
         }
 
         return $array;
+    }
+
+    /**
+     * Get the minimum allowed "per page" value, based on config file.
+     *
+     * @return int
+     */
+    private function getPerPageMin()
+    {
+        return max(1, (int) config('honeycomb.per_page_min'));
+    }
+
+    /**
+     * Get the maximum allowed "per page" value, based on config file.
+     *
+     * @return int
+     */
+    private function getPerPageMax()
+    {
+        return max(1, (int) config('honeycomb.per_page_max'));
+    }
+
+    /**
+     * Get the default "per page" value, based on config file.
+     *
+     * @return int
+     */
+    private function getPerPageDefault()
+    {
+        return max(1, (int) config('honeycomb.per_page_default'));
     }
 
 }
