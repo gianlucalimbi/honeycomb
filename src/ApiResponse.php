@@ -370,7 +370,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
             return 1;
         }
 
-        return ceil($count / $this->getPerPage());
+        return (int) ceil($count / $this->getPerPage());
     }
 
     /**
