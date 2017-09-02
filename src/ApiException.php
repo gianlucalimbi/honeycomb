@@ -100,6 +100,10 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
     {
         $useFeedback = $this->useFeedback();
 
+        if (empty($error)) {
+            throw new InvalidArgumentException('error cannot be empty');
+        }
+
         if ($useFeedback && !($error instanceof Feedback)) {
             throw new InvalidArgumentException('error must be an instance of Feedback');
         } elseif (!$useFeedback) {
