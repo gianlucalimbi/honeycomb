@@ -8,6 +8,14 @@ use Illuminate\Contracts\Support\Jsonable;
 use InvalidArgumentException;
 use JsonSerializable;
 
+/**
+ * Class ApiException.
+ *
+ * Custom Exception that provides a status code, an error feedback and additional error description.
+ * It can be converted to JSON, to be used as an API response.
+ *
+ * @package Honeycomb
+ */
 class ApiException extends Exception implements Arrayable, Jsonable, JsonSerializable
 {
 
