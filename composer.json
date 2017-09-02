@@ -16,7 +16,9 @@
             "email": "info@gianlucalimbi.com"
         }
     ],
-    "require": {},
+    "require": {
+        "illuminate/support": "~5.1"
+    },
     "autoload": {
         "psr-4": {
             "Honeycomb\\": "src"
