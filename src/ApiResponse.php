@@ -244,19 +244,34 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
     {
         $useFeedback = $this->useFeedback();
 
+        // clean and check $feedback
         if (!empty($feedback)) {
             $feedback = (array) $feedback;
 
-            foreach ($feedback as &$value) {
-                if ($useFeedback && !($value instanceof Feedback)) {
-                    throw new InvalidArgumentException('feedback values must be instances of Feedback');
-                } elseif (!$useFeedback) {
-                    // use Feedback's message
-                    if ($value instanceof Feedback) {
-                        $value = $value->getMessage();
-                    }
+            if (!is_associative_array($feedback)) {
+                throw new InvalidArgumentException('feedback must be an associative array');
+            }
 
-                    $value = (string) $value;
+            foreach ($feedback as $key => &$values) {
+                if (!is_sequential_array($values)) {
+                    throw new InvalidArgumentException('feedback values must be sequential arrays');
+                }
+
+                if (empty($values)) {
+                    unset($feedback[$key]);
+                    continue;
+                }
+
+                foreach ($values as &$value) {
+                    if ($useFeedback && !($value instanceof Feedback)) {
+                        throw new InvalidArgumentException('feedback contents must be instances of Feedback');
+                    } elseif (!$useFeedback) {
+                        if ($value instanceof Feedback) {
+                            $value = $value->getMessage();
+                        }
+
+                        $value = (string) $value;
+                    }
                 }
             }
         }
