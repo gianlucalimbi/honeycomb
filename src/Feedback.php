@@ -60,7 +60,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
      * @param string $message
      * @param string $description
      */
-    private function __construct($type, $message, $description)
+    public function __construct($type, $message, $description)
     {
         $this->setType($type);
         $this->setMessage($message);
