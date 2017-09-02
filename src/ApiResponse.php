@@ -5,6 +5,7 @@ namespace Honeycomb;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\ResponseTrait;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -200,7 +201,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
         $page = $this->getPage();
         $perPage = $this->getPerPage();
 
-        if ($this->data instanceof EloquentBuilder) {
+        if ($this->data instanceof EloquentBuilder || $this->data instanceof QueryBuilder) {
             if ($this->isPaginated()) {
                 $list = $this->data->forPage($page, $perPage)->get();
             } else {
@@ -332,7 +333,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
         return
             is_sequential_array($this->data) ||
             $this->data instanceof Collection ||
-            $this->data instanceof EloquentBuilder;
+            $this->data instanceof EloquentBuilder ||
+            $this->data instanceof QueryBuilder;
     }
 
     /**
@@ -346,7 +348,9 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
             return null;
         }
 
-        return $this->data instanceof EloquentBuilder ? $this->data->count() : sizeof($this->data);
+        return $this->data instanceof EloquentBuilder || $this->data instanceof QueryBuilder
+            ? $this->data->count()
+            : sizeof($this->data);
     }
 
     /**
