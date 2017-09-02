@@ -14,7 +14,10 @@ class HoneycombServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // publish config file
+        $this->publishes([
+            __DIR__.'/config/honeycomb.php' => config_path('honeycomb.php'),
+        ]);
     }
 
     /**
@@ -24,7 +27,10 @@ class HoneycombServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // register config file
+        $this->mergeConfigFrom(
+            __DIR__.'/config/honeycomb.php', 'honeycomb'
+        );
     }
 
 }
