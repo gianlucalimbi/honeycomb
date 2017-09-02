@@ -2,6 +2,7 @@
 
 use Honeycomb\ApiException;
 use Honeycomb\Feedback;
+use Illuminate\Contracts\Support\Arrayable;
 
 if (!function_exists('abort_api')) {
     /**
@@ -22,6 +23,51 @@ if (!function_exists('abort_api')) {
         }
 
         throw new ApiException($status, $error, $errors, null);
+    }
+}
+
+if (!function_exists('transform_array_keys')) {
+    /**
+     * Transform array keys using given transform Closure.
+     *
+     * @param array|ArrayAccess|Arrayable $array
+     * @param Closure $transform
+     *
+     * @return array
+     */
+    function transform_array_keys($array, Closure $transform)
+    {
+        $result = [];
+
+        if ($array instanceof Arrayable) {
+            $array = $array->toArray();
+        }
+
+        foreach ($array as $key => $value) {
+            $transformedKey = $key;
+            if (is_string($key)) {
+                $transformedKey = $transform($key);
+            }
+
+            $result[$transformedKey] = is_arrayable($value) ? transform_array_keys($value, $transform) : $value;
+        }
+
+        return $result;
+    }
+}
+
+if (!function_exists('is_arrayable')) {
+    /**
+     * Checks whether $var is something like an array.
+     * E.g. array, ArrayAccess or Arrayable
+     *
+     * @param $var
+     *
+     * @return boolean
+     */
+    function is_arrayable($var)
+    {
+        return is_array($var) || $var instanceof ArrayAccess || $var instanceof Arrayable;
     }
 }
 
