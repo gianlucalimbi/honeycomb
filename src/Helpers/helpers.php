@@ -82,6 +82,11 @@ if (!function_exists('is_sequential_array')) {
      */
     function is_sequential_array($var)
     {
+        // empty arrays can be both sequential and associative
+        if (is_array($var) && empty($var)) {
+            return true;
+        }
+
         return is_array($var) && array_merge($var) === $var && is_numeric(implode(array_keys($var)));
     }
 }
@@ -97,6 +102,11 @@ if (!function_exists('is_associative_array')) {
      */
     function is_associative_array($var)
     {
+        // empty arrays can be both sequential and associative
+        if (is_array($var) && empty($var)) {
+            return true;
+        }
+
         return is_array($var) && (array_merge($var) !== $var || !is_numeric(implode(array_keys($var))));
     }
 }
