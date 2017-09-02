@@ -413,12 +413,12 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
                 self::PER_PAGE_MIN, self::PER_PAGE_MAX));
         }
 
-        if ($perPage < self::PER_PAGE_MIN) {
-            $perPage = self::PER_PAGE_MIN;
-        }
-
         if ($perPage > self::PER_PAGE_MAX) {
             $perPage = self::PER_PAGE_MAX;
+        }
+
+        if ($perPage < self::PER_PAGE_MIN) {
+            $perPage = self::PER_PAGE_MIN;
         }
 
         return $perPage;
