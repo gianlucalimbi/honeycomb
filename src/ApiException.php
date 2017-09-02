@@ -155,6 +155,7 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
                     if ($useFeedback && !($value instanceof Feedback)) {
                         throw new InvalidArgumentException('errors contents must be instances of Feedback');
                     } elseif (!$useFeedback) {
+                        // use Feedback's message
                         if ($value instanceof Feedback) {
                             $value = $value->getMessage();
                         }

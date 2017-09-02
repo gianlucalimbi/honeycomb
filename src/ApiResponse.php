@@ -266,6 +266,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
                     if ($useFeedback && !($value instanceof Feedback)) {
                         throw new InvalidArgumentException('feedback contents must be instances of Feedback');
                     } elseif (!$useFeedback) {
+                        // use Feedback's message
                         if ($value instanceof Feedback) {
                             $value = $value->getMessage();
                         }
