@@ -11,7 +11,7 @@ if (!function_exists('abort_api')) {
      * @param int $status
      * @param Feedback|string $error
      * @param array|object $errors
-     * @param Exception|null $previous
+     * @param Throwable|Exception|null $previous
      *
      * @throws ApiException
      */

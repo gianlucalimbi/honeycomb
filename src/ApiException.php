@@ -46,9 +46,9 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
      * @param int $status
      * @param Feedback|string $error
      * @param array|object|null $errors
-     * @param Exception|null $previous
+     * @param Exception|\Throwable|null $previous
      */
-    public function __construct($status, $error, $errors = null, Exception $previous = null)
+    public function __construct($status, $error, $errors = null, $previous = null)
     {
         $this->setStatus($status);
         $this->setError($error);
