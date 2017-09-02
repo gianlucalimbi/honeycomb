@@ -26,6 +26,17 @@ class HoneycombServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/lang' => base_path('resources/lang/vendor/honeycomb'),
         ], 'lang');
+
+        // register custom response macros
+        response()->macro('api',
+            function ($status, $name, $data = null, $feedback = null, $metadata = [], $headers = []) {
+                return ApiResponse::success($status, $name, $data, $feedback, $metadata, $headers);
+            });
+
+        response()->macro('apiError',
+            function (ApiException $exception, $headers = []) {
+                return ApiResponse::failure($exception, $headers);
+            });
     }
 
     /**
