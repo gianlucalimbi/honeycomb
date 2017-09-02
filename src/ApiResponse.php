@@ -514,15 +514,17 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
     public function toArray()
     {
         if ($this->isSuccess()) {
-            return [
+            $array = [
                 'status' => $this->getStatusCode(),
                 $this->getName() => $this->getData(),
                 'feedback' => $this->getFeedback(),
                 'metadata' => $this->getMetadata(),
             ];
         } else {
-            return $this->apiException->toArray();
+            $array = $this->apiException->toArray();
         }
+
+        return $this->transformArrayIfNeeded($array);
     }
 
     /**
@@ -545,6 +547,27 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
     public function jsonSerialize()
     {
         return $this->toArray();
+    }
+
+    /* Config related */
+
+    /**
+     * Transform response array based on config keys.
+     * It just supports 'camel_case' at the moment.
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    private function transformArrayIfNeeded($array)
+    {
+        $camelCase = config('honeycomb.camel_case');
+
+        if ($camelCase) {
+            return transform_array_keys($array, 'camel_case');
+        }
+
+        return $array;
     }
 
 }
