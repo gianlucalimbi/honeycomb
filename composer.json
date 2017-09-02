@@ -21,6 +21,11 @@
         "illuminate/http": "~5.1",
         "illuminate/support": "~5.1"
     },
+    "require-dev": {
+        "illuminate/database": "5.1.*",
+        "illuminate/http": "5.1.*",
+        "illuminate/support": "5.1.*"
+    },
     "autoload": {
         "psr-4": {
             "Honeycomb\\": "src"
