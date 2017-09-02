@@ -39,7 +39,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
     private $data = null;
 
     /**
-     * Feedback list.
+     * Feedback or message list.
      *
      * @var array|null
      */
@@ -242,12 +242,21 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      */
     public function setFeedback($feedback)
     {
+        $useFeedback = $this->useFeedback();
+
         if (!empty($feedback)) {
             $feedback = (array) $feedback;
 
-            foreach ($feedback as $value) {
-                if (!($value instanceof Feedback)) {
+            foreach ($feedback as &$value) {
+                if ($useFeedback && !($value instanceof Feedback)) {
                     throw new InvalidArgumentException('feedback values must be instances of Feedback');
+                } elseif (!$useFeedback) {
+                    // use Feedback's message
+                    if ($value instanceof Feedback) {
+                        $value = $value->getMessage();
+                    }
+
+                    $value = (string) $value;
                 }
             }
         }
@@ -587,6 +596,16 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
         }
 
         return $field;
+    }
+
+    /**
+     * Returns whether Feedback should be used, based on config file.
+     *
+     * @return boolean
+     */
+    private function useFeedback()
+    {
+        return (boolean) config('honeycomb.use_feedback');
     }
 
     /**

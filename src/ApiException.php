@@ -29,7 +29,7 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
     /**
      * Error data.
      *
-     * @var Feedback
+     * @var Feedback|string
      */
     private $error;
 
@@ -44,11 +44,11 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
      * ApiException constructor.
      *
      * @param int $status
-     * @param Feedback $error
+     * @param Feedback|string $error
      * @param array|object|null $errors
      * @param Exception|null $previous
      */
-    public function __construct($status, Feedback $error, $errors = null, Exception $previous = null)
+    public function __construct($status, $error, $errors = null, Exception $previous = null)
     {
         $this->setStatus($status);
         $this->setError($error);
@@ -98,8 +98,17 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
      */
     private function setError($error)
     {
-        if (!($error instanceof Feedback)) {
+        $useFeedback = $this->useFeedback();
+
+        if ($useFeedback && !($error instanceof Feedback)) {
             throw new InvalidArgumentException('error must be an instance of Feedback');
+        } elseif (!$useFeedback) {
+            // use Feedback's message
+            if ($error instanceof Feedback) {
+                $error = $error->getMessage();
+            }
+
+            $error = (string) $error;
         }
 
         $this->error = $error;
@@ -122,19 +131,35 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
      */
     private function setErrors($errors)
     {
+        $useFeedback = $this->useFeedback();
+
+        // clean and check $errors
         if (!empty($errors)) {
             $errors = (array) $errors;
 
-            // clean and check $errors values
-            foreach ($errors as $key => $values) {
+            if (!is_associative_array($errors)) {
+                throw new InvalidArgumentException('errors must be an associative array');
+            }
+
+            foreach ($errors as $key => &$values) {
+                if (!is_sequential_array($values)) {
+                    throw new InvalidArgumentException('errors values must be sequential arrays');
+                }
+
                 if (empty($values)) {
                     unset($errors[$key]);
                     continue;
                 }
 
-                foreach ($values as $value) {
-                    if (!($value instanceof Feedback)) {
-                        throw new InvalidArgumentException('errors values must be instances of Feedback');
+                foreach ($values as &$value) {
+                    if ($useFeedback && !($value instanceof Feedback)) {
+                        throw new InvalidArgumentException('errors contents must be instances of Feedback');
+                    } elseif (!$useFeedback) {
+                        if ($value instanceof Feedback) {
+                            $value = $value->getMessage();
+                        }
+
+                        $value = (string) $value;
                     }
                 }
             }
@@ -189,6 +214,18 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
     public function __toString()
     {
         return $this->toJson();
+    }
+
+    /* Config */
+
+    /**
+     * Returns whether Feedback should be used, based on config file.
+     *
+     * @return boolean
+     */
+    private function useFeedback()
+    {
+        return (boolean) config('honeycomb.use_feedback');
     }
 
 }
