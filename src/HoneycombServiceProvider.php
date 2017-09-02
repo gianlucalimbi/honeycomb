@@ -16,15 +16,15 @@ class HoneycombServiceProvider extends ServiceProvider
     {
         // publish config file
         $this->publishes([
-            __DIR__.'/config/honeycomb.php' => config_path('honeycomb.php'),
+            __DIR__ . '/config/honeycomb.php' => config_path('honeycomb.php'),
         ], 'config');
 
         // load translations
-        $this->loadTranslationsFrom(__DIR__.'/lang', 'honeycomb');
+        $this->loadTranslationsFrom(__DIR__ . '/lang', 'honeycomb');
 
         // publish translations
         $this->publishes([
-            __DIR__.'/lang' => base_path('resources/lang/vendor/honeycomb'),
+            __DIR__ . '/lang' => base_path('resources/lang/vendor/honeycomb'),
         ], 'lang');
     }
 
@@ -37,7 +37,7 @@ class HoneycombServiceProvider extends ServiceProvider
     {
         // register config file
         $this->mergeConfigFrom(
-            __DIR__.'/config/honeycomb.php', 'honeycomb'
+            __DIR__ . '/config/honeycomb.php', 'honeycomb'
         );
     }
 
