@@ -11,7 +11,7 @@ use JsonSerializable;
 /**
  * Class ApiException.
  *
- * Custom Exception that provides a status code, an error feedback and additional error description.
+ * Custom Exception that provides a status code, an error feedback and additional specific errors.
  * It can be converted to JSON, to be used as an API response.
  *
  * @package Honeycomb
@@ -34,25 +34,25 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
     private $error;
 
     /**
-     * Additional error data.
+     * Additional errors data.
      *
      * @var array|null
      */
-    private $errorDescription = null;
+    private $errors = null;
 
     /**
      * ApiException constructor.
      *
      * @param int $status
      * @param Feedback $error
-     * @param array|object|null $errorDescription
+     * @param array|object|null $errors
      * @param Exception|null $previous
      */
-    public function __construct($status, Feedback $error, $errorDescription = null, Exception $previous = null)
+    public function __construct($status, Feedback $error, $errors = null, Exception $previous = null)
     {
         $this->setStatus($status);
         $this->setError($error);
-        $this->setErrorDescription($errorDescription);
+        $this->setErrors($errors);
 
         parent::__construct($error->getMessage(), 0, $previous);
     }
@@ -110,37 +110,37 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
     /**
      * @return array|null
      */
-    public function getErrorDescription()
+    public function getErrors()
     {
-        return $this->errorDescription;
+        return $this->errors;
     }
 
     /**
-     * @param array|object|null $errorDescription
+     * @param array|object|null $errors
      *
      * @return $this
      */
-    private function setErrorDescription($errorDescription)
+    private function setErrors($errors)
     {
-        if (!empty($errorDescription)) {
-            $errorDescription = (array) $errorDescription;
+        if (!empty($errors)) {
+            $errors = (array) $errors;
 
-            // clean and check $errorDescription values
-            foreach ($errorDescription as $key => $values) {
+            // clean and check $errors values
+            foreach ($errors as $key => $values) {
                 if (empty($values)) {
-                    unset($errorDescription[$key]);
+                    unset($errors[$key]);
                     continue;
                 }
 
                 foreach ($values as $value) {
                     if (!($value instanceof Feedback)) {
-                        throw new InvalidArgumentException('error_description values must be instances of Feedback');
+                        throw new InvalidArgumentException('errors values must be instances of Feedback');
                     }
                 }
             }
         }
 
-        $this->errorDescription = $errorDescription ?: null;
+        $this->errors = $errors ?: null;
 
         return $this;
     }
@@ -155,7 +155,7 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
         return [
             'status' => $this->getStatus(),
             'error' => $this->getError(),
-            'error_description' => $this->getErrorDescription(),
+            'errors' => $this->getErrors(),
         ];
     }
 

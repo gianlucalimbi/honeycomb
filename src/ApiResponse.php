@@ -21,7 +21,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      *
      * @var array
      */
-    const RESERVED_NAMES = [ 'status', 'feedback', 'metadata', 'error', 'error_description' ];
+    const RESERVED_NAMES = [ 'status', 'feedback', 'metadata', 'error', 'errors' ];
 
     const PER_PAGE_DEFAULT = self::PER_PAGE_MIN;
     const PER_PAGE_MIN = 10;

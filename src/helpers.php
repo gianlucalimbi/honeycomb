@@ -9,19 +9,19 @@ if (!function_exists('abort_api')) {
      *
      * @param int $status
      * @param Feedback|string $error
-     * @param array|object $errorDescription
+     * @param array|object $errors
      *
      * @return void
      *
      * @throws ApiException
      */
-    function abort_api($status, $error, $errorDescription = null)
+    function abort_api($status, $error, $errors = null)
     {
         if (!($error instanceof Feedback)) {
             $error = Feedback::error($error, trans('honeycomb::errors.generic'));
         }
 
-        throw new ApiException($status, $error, $errorDescription, null);
+        throw new ApiException($status, $error, $errors, null);
     }
 }
 
