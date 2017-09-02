@@ -18,6 +18,14 @@ class HoneycombServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/honeycomb.php' => config_path('honeycomb.php'),
         ]);
+
+        // load translations
+        $this->loadTranslationsFrom(__DIR__.'/lang', 'honeycomb');
+
+        // publish translations
+        $this->publishes([
+            __DIR__.'/lang' => base_path('resources/lang/vendor/honeycomb'),
+        ]);
     }
 
     /**
