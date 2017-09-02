@@ -405,7 +405,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
             return null;
         }
 
-        $page = (int) request()->get($this->transformFieldName('page'), 1);
+        $page = (int) request()->get($this->transformFieldNameIfNeeded('page'), 1);
 
         $pageCount = $this->getPageCount();
 
@@ -431,7 +431,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
         $perPageMax = $this->getPerPageMax();
         $perPageDefault = $this->getPerPageDefault();
 
-        $perPage = (int) request()->get($this->transformFieldName('per_page'), $perPageDefault);
+        $perPage = (int) request()->get($this->transformFieldNameIfNeeded('per_page'), $perPageDefault);
 
         if ($perPage <= 0) {
             abort_api(416, sprintf('invalid per_page argument, min:%1$d max:%2$d',
@@ -603,7 +603,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      *
      * @return string
      */
-    private function transformFieldName($field)
+    private function transformFieldNameIfNeeded($field)
     {
         $camelCase = config('honeycomb.camel_case');
 
