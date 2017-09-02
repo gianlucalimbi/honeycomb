@@ -73,7 +73,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
      * @param string $message
      * @param string $description
      *
-     * @return Feedback
+     * @return self
      */
     public static function success($message, $description)
     {
@@ -86,7 +86,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
      * @param string $message
      * @param string $description
      *
-     * @return Feedback
+     * @return self
      */
     public static function info($message, $description)
     {
@@ -99,7 +99,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
      * @param string $message
      * @param string $description
      *
-     * @return Feedback
+     * @return self
      */
     public static function warning($message, $description)
     {
@@ -112,7 +112,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
      * @param string $message
      * @param string $description
      *
-     * @return Feedback
+     * @return self
      */
     public static function error($message, $description)
     {
@@ -130,7 +130,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
     /**
      * @param string $type
      *
-     * @return Feedback
+     * @return $this
      */
     private function setType($type)
     {
@@ -154,7 +154,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
     /**
      * @param string $message
      *
-     * @return Feedback
+     * @return $this
      */
     private function setMessage($message)
     {
@@ -178,7 +178,7 @@ class Feedback implements Arrayable, Jsonable, JsonSerializable
     /**
      * @param string $description
      *
-     * @return Feedback
+     * @return $this
      */
     private function setDescription($description)
     {
