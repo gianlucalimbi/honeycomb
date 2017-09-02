@@ -31,11 +31,11 @@ if (!function_exists('transform_array_keys')) {
      * Transform array keys using given transform Closure.
      *
      * @param array|ArrayAccess|Arrayable $array
-     * @param Closure $transform
+     * @param Closure|string $transform
      *
      * @return array
      */
-    function transform_array_keys($array, Closure $transform)
+    function transform_array_keys($array, $transform)
     {
         $result = [];
 
