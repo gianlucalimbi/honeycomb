@@ -54,7 +54,7 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
         $this->setError($error);
         $this->setErrors($errors);
 
-        parent::__construct($error->getMessage(), 0, $previous);
+        parent::__construct($error instanceof Feedback ? $error->getMessage() : (string) $error, 0, $previous);
     }
 
     /**
