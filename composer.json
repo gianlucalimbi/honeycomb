@@ -25,6 +25,8 @@
         "psr-4": {
             "Honeycomb\\": "src"
         },
-        "files": []
+        "files": [
+            "src/helpers.php"
+        ]
     }
 }
