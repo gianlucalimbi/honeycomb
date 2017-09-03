@@ -53,4 +53,17 @@ return [
 
     'per_page_default' => 10,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Api Exception Wrapper Class
+    |--------------------------------------------------------------------------
+    |
+    | Allows a custom implementation of the ApiExceptionWrapper contract.
+    | Specify here the fully qualified class name.
+    | Use null for the default implementation.
+    |
+    */
+
+    'api_exception_wrapper_class' => null,
+
 ];
