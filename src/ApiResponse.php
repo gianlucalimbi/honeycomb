@@ -12,6 +12,13 @@ use InvalidArgumentException;
 use JsonSerializable;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class ApiResponse.
+ *
+ * This is the heart of Honeycomb. All responses are handled by this class, both successful and failures.
+ *
+ * @package Honeycomb
+ */
 class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializable
 {
 
