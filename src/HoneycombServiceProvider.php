@@ -4,6 +4,13 @@ namespace Honeycomb;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class HoneycombServiceProvider.
+ *
+ * The glue that keeps Honeycomb all together.
+ *
+ * @package Honeycomb
+ */
 class HoneycombServiceProvider extends ServiceProvider
 {
 
