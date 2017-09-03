@@ -66,7 +66,7 @@ class HoneycombServiceProvider extends ServiceProvider
             $wrapperClass = config('honeycomb.api_exception_wrapper_class');
 
             // use default implementation if invalid or null
-            if (!is_subclass_of($wrapperClass, ApiExceptionWrapper::class)) {
+            if (!is_a($wrapperClass, ApiExceptionWrapper::class, true)) {
                 $wrapperClass = ApiExceptionWrapperBase::class;
             }
 
