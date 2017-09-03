@@ -11,7 +11,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
 {
 
     /**
-     * Wrap an Exception in an ApiException.
+     * Wrap given Exception in an ApiException.
      *
      * @param \Throwable|\Exception $exception
      *

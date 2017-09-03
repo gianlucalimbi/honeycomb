@@ -10,7 +10,7 @@ interface ApiExceptionWrapper
      *
      * @param \Throwable|\Exception $exception
      *
-     * @return mixed
+     * @return \Honeycomb\ApiException
      */
     public function wrap($exception);
 
