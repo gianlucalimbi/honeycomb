@@ -35,6 +35,10 @@
         ]
     },
     "extra": {
-        "providers": "Honeycomb\\HoneycombServiceProvider"
+        "laravel": {
+            "providers": [
+                "Honeycomb\\HoneycombServiceProvider"
+            ]
+        }
     }
 }
