@@ -27,7 +27,7 @@
             "Honeycomb\\": "src"
         },
         "files": [
-            "src/Helpers/helpers.php"
+            "src/Support/helpers.php"
         ]
     },
     "extra": {
