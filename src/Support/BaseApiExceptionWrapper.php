@@ -3,11 +3,11 @@
 namespace Honeycomb\Support;
 
 use Honeycomb\ApiException;
-use Honeycomb\Contracts\ApiExceptionWrapper as BaseApiExceptionWrapper;
+use Honeycomb\Contracts\ApiExceptionWrapper;
 use Honeycomb\Feedback;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiExceptionWrapperBase implements BaseApiExceptionWrapper
+class BaseApiExceptionWrapper implements ApiExceptionWrapper
 {
 
     /**

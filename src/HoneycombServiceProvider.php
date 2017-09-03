@@ -3,7 +3,7 @@
 namespace Honeycomb;
 
 use Honeycomb\Contracts\ApiExceptionWrapper;
-use Honeycomb\Support\ApiExceptionWrapperBase;
+use Honeycomb\Support\BaseApiExceptionWrapper;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -67,7 +67,7 @@ class HoneycombServiceProvider extends ServiceProvider
 
             // use default implementation if invalid or null
             if (!is_a($wrapperClass, ApiExceptionWrapper::class, true)) {
-                $wrapperClass = ApiExceptionWrapperBase::class;
+                $wrapperClass = BaseApiExceptionWrapper::class;
             }
 
             return new $wrapperClass();
