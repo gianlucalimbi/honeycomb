@@ -7,7 +7,7 @@ use Honeycomb\Contracts\ApiExceptionWrapper as BaseApiExceptionWrapper;
 use Honeycomb\Feedback;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiExceptionWrapper implements BaseApiExceptionWrapper
+class ApiExceptionWrapperBase implements BaseApiExceptionWrapper
 {
 
     /**

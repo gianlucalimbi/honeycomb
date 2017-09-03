@@ -2,8 +2,8 @@
 
 namespace Honeycomb;
 
-use Honeycomb\Contracts\ApiExceptionWrapper as ApiExceptionWrapperContract;
-use Honeycomb\Support\ApiExceptionWrapper;
+use Honeycomb\Contracts\ApiExceptionWrapper;
+use Honeycomb\Support\ApiExceptionWrapperBase;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -61,14 +61,17 @@ class HoneycombServiceProvider extends ServiceProvider
         );
 
         // bind ApiExceptionWrapper
-        $wrapperClass = config('honeycomb.api_exception_wrapper_class');
+        $this->app->singleton(ApiExceptionWrapper::class, function () {
+            // get specified class from config
+            $wrapperClass = config('honeycomb.api_exception_wrapper_class');
 
-        // use default implementation if invalid
-        if (!is_subclass_of($wrapperClass, ApiExceptionWrapperContract::class)) {
-            $wrapperClass = ApiExceptionWrapper::class;
-        }
+            // use default implementation if invalid or null
+            if (!is_subclass_of($wrapperClass, ApiExceptionWrapper::class)) {
+                $wrapperClass = ApiExceptionWrapperBase::class;
+            }
 
-        $this->app->bind(ApiExceptionWrapperContract::class, $wrapperClass);
+            return new $wrapperClass();
+        });
     }
 
 }
