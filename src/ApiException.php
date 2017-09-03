@@ -46,7 +46,7 @@ class ApiException extends Exception implements Arrayable, Jsonable, JsonSeriali
      * @param int $status
      * @param Feedback|string $error
      * @param array|object|null $errors
-     * @param Exception|\Throwable|null $previous
+     * @param \Throwable|\Exception|null $previous
      */
     public function __construct($status, $error, $errors = null, $previous = null)
     {
