@@ -29,7 +29,7 @@ if (!function_exists('transform_array_keys')) {
     /**
      * Transform array keys using given transform Closure.
      *
-     * @param array|ArrayAccess|Arrayable $array
+     * @param mixed $array
      * @param Closure|string $transform
      *
      * @return array
@@ -48,27 +48,10 @@ if (!function_exists('transform_array_keys')) {
                 $transformedKey = $transform($key);
             }
 
-            $result[$transformedKey] = is_arrayable($value)
-                ? transform_array_keys_recursive($value, $transform)
-                : $value;
+            $result[$transformedKey] = is_scalar($value) ? $value : transform_array_keys_recursive($value, $transform);
         }
 
         return $result;
-    }
-}
-
-if (!function_exists('is_arrayable')) {
-    /**
-     * Checks whether $var is something like an array.
-     * E.g. array, ArrayAccess or Arrayable
-     *
-     * @param $var
-     *
-     * @return boolean
-     */
-    function is_arrayable($var)
-    {
-        return is_array($var) || $var instanceof ArrayAccess || $var instanceof Arrayable;
     }
 }
 
