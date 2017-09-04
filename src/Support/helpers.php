@@ -25,30 +25,34 @@ if (!function_exists('abort_api')) {
     }
 }
 
-if (!function_exists('transform_array_keys')) {
+if (!function_exists('transform_array_keys_recursive')) {
     /**
      * Transform array keys using given transform Closure.
      *
-     * @param mixed $array
+     * @param mixed $var
      * @param Closure|string $transform
      *
-     * @return array
+     * @return array|mixed
      */
-    function transform_array_keys_recursive($array, $transform)
+    function transform_array_keys_recursive($var, $transform)
     {
-        $result = [];
-
-        if ($array instanceof Arrayable) {
-            $array = $array->toArray();
+        if (is_scalar($var) || is_resource($var)) {
+            return $var;
         }
 
-        foreach ($array as $key => $value) {
+        $result = [];
+
+        if ($var instanceof Arrayable) {
+            $var = $var->toArray();
+        }
+
+        foreach ($var as $key => $value) {
             $transformedKey = $key;
             if (is_string($key)) {
                 $transformedKey = $transform($key);
             }
 
-            $result[$transformedKey] = is_scalar($value) ? $value : transform_array_keys_recursive($value, $transform);
+            $result[$transformedKey] = transform_array_keys_recursive($value, $transform);
         }
 
         return $result;
