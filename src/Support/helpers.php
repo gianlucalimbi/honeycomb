@@ -34,7 +34,7 @@ if (!function_exists('transform_array_keys')) {
      *
      * @return array
      */
-    function transform_array_keys($array, $transform)
+    function transform_array_keys_recursive($array, $transform)
     {
         $result = [];
 
@@ -48,7 +48,9 @@ if (!function_exists('transform_array_keys')) {
                 $transformedKey = $transform($key);
             }
 
-            $result[$transformedKey] = is_arrayable($value) ? transform_array_keys($value, $transform) : $value;
+            $result[$transformedKey] = is_arrayable($value)
+                ? transform_array_keys_recursive($value, $transform)
+                : $value;
         }
 
         return $result;

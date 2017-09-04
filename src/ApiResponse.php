@@ -596,7 +596,7 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
         $camelCase = config('honeycomb.camel_case');
 
         if ($camelCase) {
-            return transform_array_keys($array, 'camel_case');
+            return transform_array_keys_recursive($array, 'camel_case');
         }
 
         return $array;
