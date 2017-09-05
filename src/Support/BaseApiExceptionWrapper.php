@@ -34,8 +34,11 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
         }
 
         // default handled exceptions
+        /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         $exceptions = [
-            //
+            \Symfony\Component\HttpKernel\Exception\HttpException::class => 'wrapHttpException',
+            \Illuminate\Http\Exception\HttpResponseException::class => 'wrapHttpResponseException',
+            \Illuminate\Database\Eloquent\ModelNotFoundException::class => 'wrapModelNotFoundException',
         ];
 
         $exceptions = array_merge($exceptions, $this->exceptions);
@@ -46,7 +49,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     }
 
     /**
-     * Wrap an HttpException in an ApiException.
+     * Wrap given HttpException in an ApiException.
      *
      * @param \Symfony\Component\HttpKernel\Exception\HttpException $exception
      *
@@ -58,7 +61,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
         $errors = null;
 
         $errorMessage = strtolower(isset(Response::$statusTexts[$status]) ? Response::$statusTexts[$status] : 'error');
-        $errorDescription = trans('honeycomb::errors.generic');
+        $errorDescription = $this->getDescriptionForStatus($status);
 
         $error = Feedback::error($errorMessage, $errorDescription);
 
@@ -66,27 +69,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     }
 
     /**
-     * Wrap an NotFoundHttpException in an ApiException.
-     *
-     * @param \Symfony\Component\HttpKernel\Exception\NotFoundHttpException $exception
-     *
-     * @return ApiException
-     */
-    protected function wrapNotFoundHttpException($exception)
-    {
-        $status = 404;
-        $errors = null;
-
-        $errorMessage = 'not found';
-        $errorDescription = trans('honeycomb::errors.not_found');
-
-        $error = Feedback::error($errorMessage, $errorDescription);
-
-        return new ApiException($status, $error, $errors, $exception);
-    }
-
-    /**
-     * Wrap an HttpResponseException in an ApiException.
+     * Wrap given HttpResponseException in an ApiException.
      *
      * @param \Illuminate\Http\Exception\HttpResponseException $exception
      *
@@ -98,7 +81,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
         $errors = null;
 
         $errorMessage = strtolower(isset(Response::$statusTexts[$status]) ? Response::$statusTexts[$status] : 'error');
-        $errorDescription = trans('honeycomb::errors.generic');
+        $errorDescription = $this->getDescriptionForStatus($status);
 
         $error = Feedback::error($errorMessage, $errorDescription);
 
@@ -106,7 +89,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     }
 
     /**
-     * Wrap a ModelNotFoundException in an ApiException.
+     * Wrap given ModelNotFoundException in an ApiException.
      *
      * @param \Illuminate\Database\Eloquent\ModelNotFoundException $exception
      *
@@ -126,7 +109,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     }
 
     /**
-     * Wrap an AuthenticationException in an ApiException.
+     * Wrap given AuthenticationException in an ApiException.
      *
      * @param \Illuminate\Auth\AuthenticationException $exception
      *
@@ -146,7 +129,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     }
 
     /**
-     * Wrap a ValidationException in an ApiException.
+     * Wrap given ValidationException in an ApiException.
      *
      * @param \Illuminate\Validation\ValidationException $exception
      *
@@ -185,7 +168,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     }
 
     /**
-     * Wrap an Exception in an ApiException.
+     * Wrap given Exception in an ApiException.
      *
      * @param \Exception $exception
      *
@@ -202,6 +185,27 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
         $error = Feedback::error($errorMessage, $errorDescription);
 
         return new ApiException($status, $error, $errors, $exception);
+    }
+
+    /**
+     * Get error description based on status code.
+     *
+     * @param int $status
+     *
+     * @return string
+     */
+    protected function getDescriptionForStatus($status)
+    {
+        switch ($status) {
+            case 401:
+                return trans('honeycomb::errors.authentication');
+
+            case 404:
+                return trans('honeycomb::errors.not_found');
+
+            default:
+                return trans('honeycomb::errors.generic');
+        }
     }
 
     /**
