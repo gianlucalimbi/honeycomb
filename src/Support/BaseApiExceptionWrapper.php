@@ -34,7 +34,6 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
         }
 
         // default handled exceptions
-        /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
         $exceptions = [
             \Symfony\Component\HttpKernel\Exception\HttpException::class => 'wrapHttpException',
             \Illuminate\Http\Exception\HttpResponseException::class => 'wrapHttpResponseException',
@@ -102,65 +101,6 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
 
         $errorMessage = sprintf('%s not found', snake_case(class_basename($exception->getModel())));
         $errorDescription = trans('honeycomb::errors.not_found');
-
-        $error = Feedback::error($errorMessage, $errorDescription);
-
-        return new ApiException($status, $error, $errors, $exception);
-    }
-
-    /**
-     * Wrap given AuthenticationException in an ApiException.
-     *
-     * @param \Illuminate\Auth\AuthenticationException $exception
-     *
-     * @return ApiException
-     */
-    protected function wrapAuthenticationException($exception)
-    {
-        $status = 401;
-        $errors = null;
-
-        $errorMessage = 'unauthorized';
-        $errorDescription = trans('honeycomb::errors.authentication');
-
-        $error = Feedback::error($errorMessage, $errorDescription);
-
-        return new ApiException($status, $error, $errors, $exception);
-    }
-
-    /**
-     * Wrap given ValidationException in an ApiException.
-     *
-     * @param \Illuminate\Validation\ValidationException $exception
-     *
-     * @return ApiException
-     */
-    protected function wrapValidationException($exception)
-    {
-        $status = 422;
-        $errors = [];
-
-        $errorMessage = 'validation failed';
-        $errorDescription = trans('honeycomb::errors.validation');
-
-        $messages = $exception->validator->getMessageBag()->toArray();
-        foreach ($exception->validator->failed() as $field => $rules) {
-            $errors[$field] = [];
-
-            $i = 0;
-            foreach ($rules as $rule => $params) {
-                $ruleDescription = strtolower($rule);
-                if (!empty($params)) {
-                    $ruleDescription .= sprintf(':%s', implode(',', $params));
-                }
-
-                $descriptionMessage = sprintf('%1$s field %2$s rule failed', $field, $ruleDescription);
-                $descriptionText = $messages[$field][$i];
-
-                $errors[$field][] = Feedback::error($descriptionMessage, $descriptionText);
-                $i++;
-            }
-        }
 
         $error = Feedback::error($errorMessage, $errorDescription);
 

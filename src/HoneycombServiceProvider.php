@@ -3,6 +3,7 @@
 namespace Honeycomb;
 
 use Honeycomb\Contracts\ApiExceptionWrapper;
+use Honeycomb\Support\ApiExceptionWrapperL52;
 use Honeycomb\Support\BaseApiExceptionWrapper;
 use Illuminate\Support\ServiceProvider;
 
@@ -67,7 +68,14 @@ class HoneycombServiceProvider extends ServiceProvider
 
             // use default implementation if invalid or null
             if (!is_a($wrapperClass, ApiExceptionWrapper::class, true)) {
-                $wrapperClass = BaseApiExceptionWrapper::class;
+                $laravelVersion = explode('.', app()->version());
+                $laravelMinorVersion = $laravelVersion[1];
+
+                if ($laravelMinorVersion >= 2) {
+                    $wrapperClass = ApiExceptionWrapperL52::class;
+                } else {
+                    $wrapperClass = BaseApiExceptionWrapper::class;
+                }
             }
 
             return new $wrapperClass();
