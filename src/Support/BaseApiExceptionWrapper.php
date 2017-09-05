@@ -11,6 +11,16 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
 {
 
     /**
+     * An array of supported exceptions.
+     * Use the fully qualified class name as the key and the function name as value. Eg:
+     *
+     *   \Fully\Qualified\Class\Name\CustomException::class => 'wrapCustomException',
+     *
+     * @var array
+     */
+    protected $exceptions = [];
+
+    /**
      * Wrap given Exception in an ApiException.
      *
      * @param \Throwable|\Exception $exception
@@ -23,12 +33,16 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
             return $exception;
         }
 
-        $functionName = 'wrap' . class_basename($exception);
-        if (method_exists($this, $functionName)) {
-            return $this->$functionName($exception);
-        }
+        // default handled exceptions
+        $exceptions = [
+            //
+        ];
 
-        return $this->wrapException($exception);
+        $exceptions = array_merge($exceptions, $this->exceptions);
+
+        $functionName = $this->findBestMatch($exception, $exceptions);
+
+        return $this->$functionName($exception);
     }
 
     /**
@@ -188,6 +202,47 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
         $error = Feedback::error($errorMessage, $errorDescription);
 
         return new ApiException($status, $error, $errors, $exception);
+    }
+
+    /**
+     * Get the best exception wrapper. Returns the function name.
+     *
+     * @param \Throwable|\Exception $exception
+     * @param array $exceptions
+     *
+     * @return string
+     */
+    private function findBestMatch($exception, $exceptions)
+    {
+        // if the exact exception class is specified, return it
+        if (array_key_exists(get_class($exception), $exceptions)) {
+            return $exceptions[get_class($exception)];
+        }
+
+        // find the best match based on inheritance level
+        $bestMatch = null;
+        $bestLevel = PHP_INT_MAX;
+
+        foreach ($exceptions as $class => $function) {
+            if (is_a($exception, $class, true)) {
+                $exceptionClass = get_class($exception);
+                $level = 0;
+
+                // find the inheritance level
+                while ($exceptionClass !== $class) {
+                    $exceptionClass = get_parent_class($exceptionClass);
+                    $level++;
+                }
+
+                // save new best match
+                if ($level < $bestLevel) {
+                    $bestMatch = $function;
+                }
+            }
+        }
+
+        // if no match is found, fallback to wrapException
+        return $bestMatch ?: 'wrapException';
     }
 
 }
