@@ -36,7 +36,7 @@ if (!function_exists('transform_array_keys_recursive')) {
      */
     function transform_array_keys_recursive($var, $transform)
     {
-        if (is_scalar($var) || is_resource($var)) {
+        if ($var === null || is_scalar($var) || is_resource($var)) {
             return $var;
         }
 
