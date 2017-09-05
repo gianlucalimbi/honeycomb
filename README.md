@@ -79,7 +79,7 @@ namespace App\Exceptions;
 class Handler extends \Honeycomb\Exceptions\Handler
 {
 
-    public  function isApi($request)
+    public function isApi($request)
     {
         return $request->is('api/*');
     }
