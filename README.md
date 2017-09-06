@@ -7,7 +7,13 @@ Sweet JSON API for Laravel
 Honeycomb lets you easily create JSON APIs, creating a custom JSON Response based on your data.
 It features automatic pagination for lists, exception handling and expressive feedback.
 
-A standard Honeycomb JSON output looks like this:
+This simple line of code:
+
+```php
+return response()->api(200, 'article', $article);
+```
+
+outputs a JSON that looks like this:
 
 ```json
 {
@@ -33,7 +39,7 @@ A standard Honeycomb JSON output looks like this:
     },
     "feedback": null,
     "metadata": {
-        "name": "data"
+        "name": "article"
     }
 }
 ```
