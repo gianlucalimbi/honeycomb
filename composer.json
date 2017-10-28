@@ -1,6 +1,6 @@
 {
     "name": "gianlucalimbi/honeycomb",
-    "description": "JSON API for Laravel",
+    "description": "Sweet JSON API for Laravel",
     "version": "1.0.0",
     "type": "library",
     "keywords": [
