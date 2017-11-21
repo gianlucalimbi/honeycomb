@@ -44,7 +44,7 @@ outputs a JSON that looks like this:
 }
 ```
 
-For the full feature list, visit the [Wiki](https://github.com/gianlucalimbi/honeycomb/wiki).
+For the full feature list, visit the [documentation](https://gianlucalimbi.github.io/honeycomb/).
 
 ## Requirements
 
@@ -115,4 +115,4 @@ $config = config('honeycomb.config_name');
 $lang = trans('honeycomb::file.line');
 ```
 
-For the full usage guide, visit the [Wiki](https://github.com/gianlucalimbi/honeycomb/wiki).
+For the full usage guide, visit the [documentation](https://gianlucalimbi.github.io/honeycomb/).
