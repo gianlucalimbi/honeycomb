@@ -1,8 +1,6 @@
 ---
 ---
 
-@import "{{ site.theme }}";
-
 // Variables
 
 $color-primary: #FFC107;
@@ -13,6 +11,10 @@ $header-bg-color-secondary: $color-primary;
 
 // Text
 $section-headings-color: $color-primary;
+
+// Default theme
+
+@import "{{ site.theme }}";
 
 // Header
 
