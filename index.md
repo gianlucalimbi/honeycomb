@@ -266,7 +266,7 @@ Allows a custom implementation of the ApiExceptionWrapper contract. Specify the 
 You can learn more about Automatic Exception Wrapping [here](#automatic-exception-wrapping).
 
 ```php
-'api_exception_wrapper_class' => null,
+'api_exception_wrapper_class' => \App\Exceptions\CustomApiExceptionWrapper::class,
 ```
 
 ## i18n
@@ -350,6 +350,40 @@ class Handler extends HoneycombExceptionHandler
 When the `isApi` function returns `true`, the Exception will be wrapped in an `ApiException` using an instance of `ApiExceptionWrapper` and it will be used to create a failure `ApiResponse`.
 
 When the `isApi` function returns `false`, the `renderException` function will be called and the Exception will be rendered as usual.
+
+### ApiExceptionWrapper
+{:.no_toc}
+
+To wrap a normal `Exception` in an `ApiException`, Honeycomb uses a `ApiExceptionWrapper` helper class. In this class are defined a set of rules that explains how Exceptions should be wrapped.
+
+By default Honeycomb can wrap these Exceptions:
+- `HttpException`
+- `HttpResponseException`
+- `ModelNotFoundException`
+- `Exception` (as a fallback)
+
+When using Laravel 5.2 or higher, also these Exceptions are supported:
+- `AuthenticationException`
+- `ValidationException`
+
+You can provide your own implementation extending `Honeycomb\Support\BaseApiExceptionWrapper` and specifying your class in the configuration, as described [here](#configuration).
+
+Define a `$exceptions` property that contains an array of the `Exception`s that you can wrap and the corresponding function that will be called to wrap them.
+
+For example:
+
+```php
+protected $exceptions = [
+    \Illuminate\Auth\AuthenticationException::class => 'wrapAuthenticationException',
+];
+
+protected function wrapAuthenticationException($exception)
+{
+    $error = Feedback::error('unauthorized', trans('honeycomb::errors.authentication'));
+
+    return new ApiException(412, $error, $errors, $exception);
+}
+```
 
 ## Roadmap
 
