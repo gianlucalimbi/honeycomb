@@ -215,6 +215,10 @@ When using pagination, the following keys will be added in the `metadata` sectio
 
 ...
 
+## i18n
+
+...
+
 ## Automatic Exception Wrapping
 
 ...
