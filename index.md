@@ -193,6 +193,58 @@ If you don't want to use expressive feedback and just use the internal message s
 - every instance of `Feedback` will be replaced with its `$message` property;
 - you can pass a string wherever a `Feedback` is expected (e.g. in the `response()->apiFailure()` and `ApiResponse::failure()` functions).
 
+This is a sample failure response with feedback enabled:
+
+```json
+{
+    "status": 422,
+    "error": {
+        "type": "error",
+        "message": "validation failed",
+        "description": "An error occurred. Please try again."
+    },
+    "errors": {
+        "email": [
+            {
+                "type": "error",
+                "message": "email field email rule failed",
+                "description": "The email must be a valid email address."
+            }
+        ],
+        "password": [
+            {
+                "type": "error",
+                "message": "password field min:6 rule failed",
+                "description": "The password must be at least 6 characters."
+            },
+            {
+                "type": "error",
+                "message": "password field alpha rule failed",
+                "description": "The password may only contain letters."
+            }
+        ]
+    }
+}
+```
+
+This is the same response, but with feedback disabled:
+
+```json
+{
+    "status": 422,
+    "error": "validation failed",
+    "errors": {
+        "email": [
+            "email field email rule failed"
+        ],
+        "password": [
+            "password field min:6 rule failed",
+            "password field alpha rule failed"
+        ]
+    }
+}
+```
+
 ## Pagination
 
 When using a list (`Collection`, array, `Eloquent\Builder` or `Query\Builder`) for `$data` in a successful API response, you can enable automatic pagination using the `setPaginated()` function:
