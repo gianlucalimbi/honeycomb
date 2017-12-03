@@ -326,16 +326,16 @@ class Handler extends HoneycombExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $exception
      *
      * @return \Illuminate\Http\Response
      */
     public function renderException($request, Exception $exception)
     {
         // just an example for a custom response
-        if ($exception instanceof NotFoundException) {
-            return response()->view('errors.not_found');
+        if ($exception instanceof SomeException) {
+            return response()->view('errors.some_view');
         }
 
         return parent::renderException($request, $exception);
