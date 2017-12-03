@@ -110,14 +110,14 @@ return ApiResponse::success(200, 'article', $article);
 You can create an API failure response using the `abort_api` helper function as follows:
 
 ```php
-abort_api(412, 'validation failed');
+abort_api(422, 'validation failed');
 ```
 
 This will create a JSON that looks like this:
 
 ```json
 {
-    "status": 412,
+    "status": 422,
     "error": {
         "type": "error",
         "message": "validation failed",
@@ -155,11 +155,11 @@ You can also manually create an `ApiException` and use it in the a new failure `
 ```php
 $error = Feedback::error('validation failed', 'An error occurred. Please try again.');
 
-throw new ApiException(412, $error);
+throw new ApiException(422, $error);
 // or
-return response()->apiFailure(new ApiException(412, $error));
+return response()->apiFailure(new ApiException(422, $error));
 // or
-return ApiResponse::failure(new ApiException(412, $error));
+return ApiResponse::failure(new ApiException(422, $error));
 ```
 
 Note that in the `response()->apiFailure()` and `ApiResponse::failure()` functions you can pass a `$headers` associative array as a second argument, similar to the `response()->api()` function.
@@ -381,7 +381,7 @@ protected function wrapAuthenticationException($exception)
 {
     $error = Feedback::error('unauthorized', trans('honeycomb::errors.authentication'));
 
-    return new ApiException(412, $error, $errors, $exception);
+    return new ApiException(401, $error, $errors, $exception);
 }
 ```
 
