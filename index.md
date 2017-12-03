@@ -271,7 +271,21 @@ You can learn more about Automatic Exception Wrapping [here](#automatic-exceptio
 
 ## i18n
 
-...
+The language lines used for `Feedback`'s `$description` when using the [Automatic Exception Wrapping](#automatic-exception-wrapping) are located in a language file. Only a `error.php` file is used right now.
+
+Use this artisan command to publish the translation in your `app` folder:
+
+```bash
+php artisan vendor:publish --provider="Honeycomb\HoneycombServiceProvider" --tag=lang
+```
+
+You can now edit the `resources/lang/vendor/honeycomb/errors.php` file.
+
+Use this to access a translation:
+
+```php
+$lang = trans('honeycomb::file.line');
+```
 
 ## Automatic Exception Wrapping
 
