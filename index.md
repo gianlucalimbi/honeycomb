@@ -439,4 +439,8 @@ protected function wrapAuthenticationException($exception)
 
 ## Roadmap
 
-...
+What I'm planning for the next releases:
+
+- Additional `Link` headers in paginated response, like `next`, `prev`, etc
+
+- Automatic embeds/includes support using Eloquent models (e.g. `/api/posts?with=author`)
