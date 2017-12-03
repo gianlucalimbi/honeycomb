@@ -289,7 +289,66 @@ $lang = trans('honeycomb::file.line');
 
 ## Automatic Exception Wrapping
 
-...
+Honeycomb can wrap any Exception in an `ApiException` that can be used as a JSON Response. In order to take advantage of this you have to update the `app/Exceptions/Handler.php` file as follows:
+
+1.  Make the class extend `Honeycomb\Exceptions\Handler` instead of `Illuminate\Foundation\Exceptions\Handler`
+
+2.  Implement the `isApi` function and return `true` if the `Request` passed as an arguments should have a JSON Response
+
+3.  Rename the `render` to `renderException`, if you want to add a custom renderer for the Exception
+
+4. Make sure NOT to override the `render` function
+
+For example:
+
+```php
+<?php
+
+namespace App\Exceptions;
+
+use Honeycomb\Exceptions\Handler as HoneycombExceptionHandler;
+
+class Handler extends HoneycombExceptionHandler
+{
+
+    /**
+     * Determines if current request is an API request.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return boolean
+     */
+    public function isApi($request)
+    {
+        return $request->is('api/*');
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function renderException($request, Exception $exception)
+    {
+        // just an example for a custom response
+        if ($exception instanceof NotFoundException) {
+            return response()->view('errors.not_found');
+        }
+
+        return parent::renderException($request, $exception);
+    }
+
+    // the rest of your handler...
+
+}
+```
+
+When the `isApi` function returns `true`, the Exception will be wrapped in an `ApiException` using an instance of `ApiExceptionWrapper` and it will be used to create a failure `ApiResponse`.
+
+When the `isApi` function returns `false`, the `renderException` function will be called and the Exception will be rendered as usual.
 
 ## Roadmap
 
