@@ -338,6 +338,7 @@ class Handler extends HoneycombExceptionHandler
             return response()->view('errors.some_view');
         }
 
+        // use Laravel default render function
         return parent::renderException($request, $exception);
     }
 
