@@ -213,7 +213,61 @@ When using pagination, the following keys will be added in the `metadata` sectio
 
 ## Configuration
 
-...
+You can customize some aspects of Honeycomb by updating the configuration file.
+
+Use this artisan command to publish the configuration in your `app` folder:
+
+```bash
+php artisan vendor:publish --provider="Honeycomb\HoneycombServiceProvider" --tag=config
+```
+
+You can now edit the `app/config/honeycomb.php` file.
+
+Use this to access a configuration:
+
+```php
+$config = config('honeycomb.config_name');
+```
+
+### Camel Case
+{:.no_toc}
+
+When this flag is set to `true`, Honeycomb will convert all keys in the JSON response to be camelCase, otherwise the case of keys will be unchanged. Also the `per_page` query argument used for pagination must be used in camelCase (`perPage`). By default, Honeycomb custom keys are in snake_case.
+
+```php
+'camel_case' => false,
+```
+
+### Use Feedback
+{:.no_toc}
+
+By default, Honeycomb will use descriptive messages in the response using the `Feedback` class. By setting this flag to false, only the internal message will be used instead.
+
+```php
+'use_feedback' => true,
+```
+
+### Pagination
+{:.no_toc}
+
+Change the minimum, the maximum and the default `per_page` values used in lists. If the minimum and maximum values are incompatible, only `per_page_min` will be used.
+
+```php
+'per_page_min' => 10,
+'per_page_max' => 100,
+'per_page_default' => 10,
+```
+
+### Api Exception Wrapper Class
+{:.no_toc}
+
+Allows a custom implementation of the ApiExceptionWrapper contract. Specify the fully qualified class name. Use `null` for the default implementation.
+
+You can learn more about Automatic Exception Wrapping [here](#automatic-exception-wrapping).
+
+```php
+'api_exception_wrapper_class' => null,
+```
 
 ## i18n
 
