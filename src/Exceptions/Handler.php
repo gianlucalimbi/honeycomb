@@ -41,8 +41,24 @@ abstract class Handler extends ExceptionHandler
             return response()->apiError($exception);
         }
 
-        // default handler
-        return parent::render($request, $exception);
+        // non-api handler
+        return $this->renderException($request, $exception);
+    }
+
+    /**
+     * Render a non-api exception into an HTTP response.
+     * The base implementation just calls Laravel's default `render` function.
+     * Developers should override this function in order to provide a custom response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Throwable|\Exception $exception
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function renderException($request, \Exception $exception)
+    {
+        // call the default handler
+        parent::render($request, $exception);
     }
 
 }
