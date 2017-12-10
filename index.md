@@ -376,7 +376,7 @@ class Handler extends HoneycombExceptionHandler
     }
 
     /**
-     * Render an exception into an HTTP response.
+     * Render a non-api exception into an HTTP response
      *
      * @param \Illuminate\Http\Request $request
      * @param \Exception $exception
