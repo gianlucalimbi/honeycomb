@@ -58,7 +58,7 @@ abstract class Handler extends ExceptionHandler
     public function renderException($request, \Exception $exception)
     {
         // call the default handler
-        parent::render($request, $exception);
+        return parent::render($request, $exception);
     }
 
 }
