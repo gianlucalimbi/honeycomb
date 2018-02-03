@@ -4,8 +4,7 @@ Sweet JSON API for Laravel
 
 ## Features
 
-Honeycomb lets you easily create JSON APIs, creating a custom JSON Response based on your data.
-It features automatic pagination for lists, exception handling and expressive feedback.
+Honeycomb lets you easily create JSON APIs, creating a custom JSON Response based on your data. It features automatic pagination for lists, exception handling and expressive feedback.
 
 This simple line of code:
 
@@ -44,13 +43,13 @@ outputs a JSON that looks like this:
 }
 ```
 
-For the full feature list, visit the [documentation](https://gianlucalimbi.github.io/honeycomb/).
+For the full feature list, visit the [documentation].
 
 ## Requirements
 
 Honeycomb requires Laravel 5.1 or higher.
 
-## Installation
+## Installation and Usage
 
 To install Honeycomb, add it to your composer dependencies:
 
@@ -67,43 +66,14 @@ If you are using Laravel up to version 5.4, add `HoneycombServiceProvider` to yo
 ],
 ```
 
-This won't be needed if you are using Laravel 5.5 or higher, as Honeycomb uses Laravel's [Package Discovery](https://medium.com/@taylorotwell/package-auto-discovery-in-laravel-5-5-ea9e3ab20518).
+This won't be needed if you are using Laravel 5.5 or higher, as Honeycomb uses Laravel's [Package Auto-Discovery](https://medium.com/@taylorotwell/package-auto-discovery-in-laravel-5-5-ea9e3ab20518).
 
-In order to get advantage of the automatic exception handling, you have to update the `app/Exceptions/Handler.php` file as follows:
-
- * Make the class extend `Honeycomb\Exceptions\Handler` instead of `Illuminate\Foundation\Exceptions\Handler`
- * Implement the `isApi` function
- * Make sure to `return parent::render(...);` inside your `render` function
-
-For example:
-
-```php
-<?php
-
-namespace App\Exceptions;
-
-class Handler extends \Honeycomb\Exceptions\Handler
-{
-
-    public function isApi($request)
-    {
-        return $request->is('api/*');
-    }
-
-    public function render($request, \Exception $exception)
-    {
-        return parent::render($request, $exception);
-    }
-
-    // the rest of your handler...
-
-}
-```
+In order to take advantage of the automatic exception handling, you have to update the `app/Exceptions/Handler.php` file as described in the [documentation]:
 
 If you want to update the default configurations or language lines, use this artisan command:
 
 ```bash
-php artisan vendor:publish
+php artisan vendor:publish --provider="Honeycomb\HoneycombServiceProvider" --tag=config
 ```
 
 You can access the configurations or language lines as follows:
@@ -115,4 +85,6 @@ $config = config('honeycomb.config_name');
 $lang = trans('honeycomb::file.line');
 ```
 
-For the full usage guide, visit the [documentation](https://gianlucalimbi.github.io/honeycomb/).
+For the full usage guide, visit the [documentation].
+
+[documentation]: https://gianlucalimbi.github.io/honeycomb/
