@@ -102,6 +102,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param array $headers
      *
      * @return self
+     *
+     * @throws ApiException
      */
     public static function success($status, $name, $data, $feedback = null, $metadata = [], $headers = [])
     {
@@ -122,6 +124,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param array $headers
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public static function failure($apiException, $headers = [])
     {
@@ -137,6 +141,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param string $text
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setStatusCode($status, $text = null)
     {
@@ -164,6 +170,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param string $name
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setName($name)
     {
@@ -182,6 +190,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
 
     /**
      * @return mixed
+     *
+     * @throws ApiException
      */
     public function getData()
     {
@@ -194,6 +204,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
 
     /**
      * @return array|Collection
+     *
+     * @throws ApiException
      */
     public function getList()
     {
@@ -225,6 +237,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param mixed $data
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setData($data)
     {
@@ -246,6 +260,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param array|null $feedback
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setFeedback($feedback)
     {
@@ -293,6 +309,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
 
     /**
      * @return array|object
+     *
+     * @throws ApiException
      */
     public function getMetadata()
     {
@@ -316,6 +334,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param array|object $metadata
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setMetadata($metadata)
     {
@@ -338,6 +358,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param boolean $paginated
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setPaginated($paginated = true)
     {
@@ -385,6 +407,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * Get the total number of pages.
      *
      * @return int
+     *
+     * @throws ApiException
      */
     public function getPageCount()
     {
@@ -405,6 +429,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * Get the current requested page.
      *
      * @return int
+     *
+     * @throws ApiException
      */
     public function getPage()
     {
@@ -427,6 +453,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * Get the number of items that should be shown per page.
      *
      * @return int
+     *
+     * @throws ApiException
      */
     public function getPerPage()
     {
@@ -470,6 +498,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param ApiException|null $apiException
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setApiException($apiException)
     {
@@ -508,6 +538,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param int $jsonOptions
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     public function setJsonOptions($jsonOptions)
     {
@@ -520,6 +552,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * Updates the response content.
      *
      * @return $this
+     *
+     * @throws ApiException
      */
     private function update()
     {
@@ -542,6 +576,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * Convert the response instance to an array.
      *
      * @return array
+     *
+     * @throws ApiException
      */
     public function toArray()
     {
@@ -565,6 +601,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * @param int $options
      *
      * @return string
+     *
+     * @throws ApiException
      */
     public function toJson($options = 0)
     {
@@ -575,6 +613,8 @@ class ApiResponse extends Response implements Arrayable, Jsonable, JsonSerializa
      * Convert the response into something JSON serializable.
      *
      * @return array
+     *
+     * @throws ApiException
      */
     public function jsonSerialize()
     {

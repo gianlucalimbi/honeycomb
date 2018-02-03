@@ -5,7 +5,10 @@ namespace Honeycomb\Support;
 use Honeycomb\ApiException;
 use Honeycomb\Contracts\ApiExceptionWrapper;
 use Honeycomb\Feedback;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class BaseApiExceptionWrapper implements ApiExceptionWrapper
 {
@@ -35,9 +38,9 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
 
         // default handled exceptions
         $exceptions = [
-            \Symfony\Component\HttpKernel\Exception\HttpException::class => 'wrapHttpException',
-            \Illuminate\Http\Exception\HttpResponseException::class => 'wrapHttpResponseException',
-            \Illuminate\Database\Eloquent\ModelNotFoundException::class => 'wrapModelNotFoundException',
+            HttpException::class => 'wrapHttpException',
+            HttpResponseException::class => 'wrapHttpResponseException',
+            ModelNotFoundException::class => 'wrapModelNotFoundException',
         ];
 
         $exceptions = array_merge($exceptions, $this->exceptions);
@@ -50,7 +53,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     /**
      * Wrap given HttpException in an ApiException.
      *
-     * @param \Symfony\Component\HttpKernel\Exception\HttpException $exception
+     * @param HttpException $exception
      *
      * @return ApiException
      */
@@ -70,7 +73,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     /**
      * Wrap given HttpResponseException in an ApiException.
      *
-     * @param \Illuminate\Http\Exception\HttpResponseException $exception
+     * @param HttpResponseException $exception
      *
      * @return ApiException
      */
@@ -90,7 +93,7 @@ class BaseApiExceptionWrapper implements ApiExceptionWrapper
     /**
      * Wrap given ModelNotFoundException in an ApiException.
      *
-     * @param \Illuminate\Database\Eloquent\ModelNotFoundException $exception
+     * @param ModelNotFoundException $exception
      *
      * @return ApiException
      */
