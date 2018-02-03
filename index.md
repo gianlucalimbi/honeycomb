@@ -341,7 +341,7 @@ $lang = trans('honeycomb::file.line');
 
 ## Automatic Exception Wrapping
 
-Honeycomb can wrap any Exception in an `ApiException` that can be used as a JSON Response. In order to take advantage of this you have to update the `app/Exceptions/Handler.php` file as follows:
+Honeycomb can wrap any Exception in an `ApiException` that can be used as a JSON Response. In order to take advantage of this, you have to update the `app/Exceptions/Handler.php` file as follows:
 
 1.  Make the class extend `Honeycomb\Exceptions\Handler` instead of `Illuminate\Foundation\Exceptions\Handler`
 
