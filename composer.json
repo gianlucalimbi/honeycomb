@@ -24,10 +24,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Honeycomb\\": "src"
+            "Honeycomb\\": "src/Honeycomb/"
         },
         "files": [
-            "src/Support/helpers.php"
+            "src/Honeycomb/Support/helpers.php"
         ]
     },
     "extra": {
